@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ir_yr_confirm_cover" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4a92cba-cbc0-4c1d-8903-488e5cf30f50">
+	<property name="ireport.zoom" value="1.9487171000000048"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="528"/>
+	<parameter name="adtm_date" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_coopid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_smembgroup" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_emembgroup" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_smembno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_emembno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+yrconfirmmaster.member_no ,
+yrconfirmmaster.membgroup_code ,
+mbucfmembgroup.membgroup_desc ,
+mbucfprename.prename_desc ,
+mbmembmaster.memb_name ,
+mbmembmaster.memb_surname ,
+cmcoopconstant.auditor,
+cmcoopconstant.auditor_addr,
+(mbucfprename.prename_desc||''||mbmembmaster.memb_name||'   '||mbmembmaster.memb_surname )as fullname,
+(yrconfirmmaster.membgroup_code||' / '||mbucfmembgroup.membgroup_desc) as membgroup
+from yrconfirmmaster
+left join cmcoopconstant on yrconfirmmaster.coop_id=cmcoopconstant.coop_no
+left join mbmembmaster on yrconfirmmaster.member_no = mbmembmaster.member_no
+left join mbucfprename on mbmembmaster.prename_code = mbucfprename.prename_code
+left join mbucfmembgroup on trim( yrconfirmmaster.membgroup_code ) = trim( mbucfmembgroup.membgroup_code )
+where yrconfirmmaster.coop_id =$P{as_coopid}
+and trim( yrconfirmmaster.membgroup_code) between trim($P{as_smembgroup}) and trim($P{as_emembgroup})
+and yrconfirmmaster.balance_date = $P{adtm_date}
+and yrconfirmmaster.member_no between $P{as_smembno} and $P{as_emembno}
+order by yrconfirmmaster.member_no]]>
+	</queryString>
+	<field name="MEMBER_NO" class="java.lang.String"/>
+	<field name="MEMBGROUP_CODE" class="java.lang.String"/>
+	<field name="MEMBGROUP_DESC" class="java.lang.String"/>
+	<field name="PRENAME_DESC" class="java.lang.String"/>
+	<field name="MEMB_NAME" class="java.lang.String"/>
+	<field name="MEMB_SURNAME" class="java.lang.String"/>
+	<field name="AUDITOR" class="java.lang.String"/>
+	<field name="AUDITOR_ADDR" class="java.lang.String"/>
+	<field name="FULLNAME" class="java.lang.String"/>
+	<field name="MEMBGROUP" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6722dfe5-1188-447e-8778-488e9586bda7" x="171" y="370" width="374" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ผู้สอบบัญชีสหกรณ์ออมทรัพย์โรงพยาบาลแพร่ จำกัด"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b0a3094f-497e-453b-a5da-810731e386db" x="171" y="401" width="229" height="56"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AUDITOR_ADDR}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="bf3537aa-be80-46f6-baa4-7e48d1476b68" x="471" y="289" width="50" height="50"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="aa0d9ea0-cdfc-4a8c-938d-e55adce82152" x="80" y="65" width="409" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FULLNAME}+" เลขที่สมาชิก "+$F{MEMBER_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0465a855-6e71-4214-bd93-316889116c92" x="80" y="98" width="409" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA["รหัสหน่วย  "+$F{MEMBGROUP}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="44497d30-0b28-40af-ab04-bb7bbcfaa47d" x="42" y="65" width="38" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เรียน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="55d15a1d-aef0-421b-9f06-0f9d4e425cfb" x="133" y="370" width="38" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[เรียน]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ir_mb_master_salary" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ea8dfe30-884a-415a-86c8-1e656b6f4ab0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="as_coopid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="an_ssalary" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="an_esalary" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="an_sage" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="an_eage" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_smembgroup" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_emembgroup" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+mbmembmaster.member_no ,
+mbmembmaster.memb_name ,
+mbmembmaster.memb_surname ,
+mbucfprename.prename_desc ,
+mbmembmaster.sex ,
+mbucfprename.prename_desc ,
+mbmembmaster.salary_amount ,
+ft_calagemth( mbmembmaster.birth_date , sysdate ) as age ,
+ trim( mbucfmembgroup.membgroup_code ) as membgroup_code ,
+ trim( mbucfmembgroup.membgroup_desc ) as membgroup_desc ,
+cmcoopmaster.coop_name ,
+to_char( $P{an_ssalary} ,'99G999G999G999D00') AS start_salary,
+to_char( $P{an_esalary} ,'99G999G999G999D00') AS end_salary
+from mbmembmaster
+left join mbucfprename on mbmembmaster.prename_code = mbucfprename.prename_code
+left join mbucfmembgroup on trim( mbmembmaster.membgroup_code ) = trim( mbucfmembgroup.membgroup_code )
+left join cmcoopmaster on mbmembmaster.coop_id = cmcoopmaster.coop_id
+where mbmembmaster.coop_id = $P{as_coopid}
+and  mbmembmaster.resign_status = 0
+and mbmembmaster.salary_amount between TO_NUMBER( $P{an_ssalary} ) and TO_NUMBER( $P{an_esalary} )
+and ft_calagemth( mbmembmaster.birth_date , sysdate ) between TO_NUMBER( $P{an_sage} ) and TO_NUMBER( $P{an_eage})
+and trim( mbmembmaster.membgroup_code ) between trim( $P{as_smembgroup} ) and trim( $P{as_emembgroup} )]]>
+	</queryString>
+	<field name="MEMBER_NO" class="java.lang.String"/>
+	<field name="MEMB_NAME" class="java.lang.String"/>
+	<field name="MEMB_SURNAME" class="java.lang.String"/>
+	<field name="PRENAME_DESC" class="java.lang.String"/>
+	<field name="SEX" class="java.lang.String"/>
+	<field name="SALARY_AMOUNT" class="java.math.BigDecimal"/>
+	<field name="AGE" class="java.lang.String"/>
+	<field name="MEMBGROUP_CODE" class="java.lang.String"/>
+	<field name="MEMBGROUP_DESC" class="java.lang.String"/>
+	<field name="COOP_NAME" class="java.lang.String"/>
+	<field name="START_SALARY" class="java.lang.String"/>
+	<field name="END_SALARY" class="java.lang.String"/>
+	<variable name="female" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{SEX} == "F" ? 1 : 0]]></variableExpression>
+	</variable>
+	<variable name="male" class="java.lang.Number" calculation="Sum">
+		<variableExpression><![CDATA[$F{SEX} == "M" ? 1 : 0]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a403254c-3d78-4fd7-98e8-79e21363e66f" x="0" y="0" width="802" height="27"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[สหกรณ์ออมทรัพย์โรงพยาบาลแพร่ จำกัด]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="55033da6-24f2-4e84-b26f-1cb58b2f0bb3" x="0" y="27" width="802" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA["สมาชิกที่มีช่วงเงินตั้งแต่ " + $F{START_SALARY} + " บาท ถึง "+ $F{END_SALARY}+" บาท"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="153fc5b2-1d2d-4e64-b31f-3bfcf348ac57" x="52" y="0" width="61" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[เลขสมาชิก]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fd98b77c-f3bf-4838-8faf-a00325ebbc3a" x="113" y="0" width="172" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[ชื่อ - นามสกุล]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec91bf5e-c313-4d5c-904c-62bb21f1b3f0" x="285" y="0" width="35" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[เพศ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="da943f6f-da9b-4f28-b72a-fd1e72befbc4" x="320" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[อายุ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ed6cf77c-4fc6-414b-8f87-37d70e1aee10" x="366" y="0" width="75" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[เงินเดือน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a22ad66c-ca86-41ee-b4ef-3255f0556a9b" x="441" y="0" width="61" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[รหัสหน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d824def4-0e32-43a9-b64a-a8bee66f2d35" x="502" y="0" width="299" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[ชื่อหน่วย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cb932492-6f83-4413-87ba-ac3d827aa209" x="0" y="0" width="52" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[ลำดับที่]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9131e161-a9eb-4078-9ba3-056487c1ca93" x="52" y="0" width="61" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MEMBER_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f01c87c0-0026-4149-bd60-061f6c149e4c" x="113" y="0" width="172" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRENAME_DESC}+$F{MEMB_NAME}+'  '+$F{MEMB_SURNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="65a0c594-5b06-4453-b060-c2fc27000b38" x="285" y="0" width="35" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SEX}== "F" ? "ชาย" : "หญิง"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c32d51aa-8a78-47fa-8871-28501884d89b" x="320" y="0" width="46" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AGE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement uuid="2f169adb-22af-4627-ad20-efa672fd0cde" x="366" y="0" width="75" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SALARY_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="30f955fb-eb22-4a6e-b0ad-3950f0246b1d" x="441" y="0" width="61" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MEMBGROUP_CODE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a71a5aae-d910-4ae2-855d-01a3b368a40b" x="503" y="0" width="299" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MEMBGROUP_DESC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d787bbeb-7e1a-474c-bce6-4a011b68e938" x="0" y="0" width="52" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0751d06c-bd56-4bda-9f59-492bc6e2bbb6" x="113" y="0" width="207" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[รวมสมาชิกทั้งหมด
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d563bcd6-d2ed-4e19-a96c-fc416d5422bd" x="113" y="20" width="207" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[รวมสมาชิกผู้ชาย]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6106f2bf-bc5c-4184-a02e-3c28afd0baab" x="113" y="40" width="207" height="20"/>
+				<textElement>
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[รวมสมาชิกผู้หญิง]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement uuid="83701035-d677-4e4f-a545-7a26c0e1d106" x="320" y="40" width="46" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{female}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="f2e2c580-cf9a-4b3d-a66e-d250a6a4eefb" x="320" y="20" width="46" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{male}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="54e033b6-d718-486f-bfe9-37fdc6117188" x="320" y="0" width="46" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="80014e89-919e-4cf2-a76d-912a3f4b2a28" x="366" y="0" width="75" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[คน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cdd4d832-7df8-475b-9ec7-007d124609f8" x="366" y="20" width="75" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[คน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="79ac19ea-4d2b-49e2-acce-02047b455aa9" x="366" y="40" width="75" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Angsana New" size="16"/>
+				</textElement>
+				<text><![CDATA[คน]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

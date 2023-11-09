@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ir_divavg_for_post" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e14b942-7916-4222-8b4e-63f0f299c810">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="as_coopid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_period" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+mbucfprename.prename_desc,
+mbmembmaster.memb_name,
+mbmembmaster.memb_surname,
+yrdivmaster.div_amt,
+yrdivmaster.avg_amt,
+det1.pay_amt ,
+det2.bizzaccount_no
+from yrdivmaster
+left join mbmembmaster on yrdivmaster.member_no = mbmembmaster.member_no
+left join mbucfmembtype on mbmembmaster.membtype_code = mbucfmembtype.membtype_code
+left join mbucfprename on mbmembmaster.prename_code = mbucfprename.prename_code
+left join yrreqmethpay on yrdivmaster.member_no   = yrreqmethpay.member_no
+left join (select yrreqmethpaydet.methreq_docno , sum( yrreqmethpaydet.pay_amt ) as pay_amt from yrreqmethpaydet group by yrreqmethpaydet.methreq_docno ) det1 on  yrreqmethpay.methreq_docno= det1.methreq_docno
+left join (select yrreqmethpaydet.methreq_docno as methreq_docno , yrreqmethpaydet.methpaytype_code as methpaytype_code ,  yrreqmethpaydet.bizzaccount_no as bizzaccount_no from yrreqmethpaydet  where yrreqmethpaydet.seq_no  = (select max(det.seq_no) from  yrreqmethpaydet det where yrreqmethpaydet.methreq_docno = det.methreq_docno  ) ) det2 on  yrreqmethpay.methreq_docno= det2.methreq_docno
+left join yrcfrate on yrdivmaster.div_year =  yrcfrate.div_year
+where
+trim( yrdivmaster.coop_id) = $P{as_coopid}
+and trim( yrdivmaster.div_year ) = $P{as_period}
+and det2.methpaytype_code = 'CBT'
+order by  mbmembmaster.member_no]]>
+	</queryString>
+	<field name="PRENAME_DESC" class="java.lang.String"/>
+	<field name="MEMB_NAME" class="java.lang.String"/>
+	<field name="MEMB_SURNAME" class="java.lang.String"/>
+	<field name="DIV_AMT" class="java.math.BigDecimal"/>
+	<field name="AVG_AMT" class="java.math.BigDecimal"/>
+	<field name="PAY_AMT" class="java.math.BigDecimal"/>
+	<field name="BIZZACCOUNT_NO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a3faad9c-1501-4e1e-8a8f-33de6a060cbe" x="0" y="0" width="263" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="AngsanaUPC" size="16"/>
+				</textElement>
+				<text><![CDATA[ชื่อ - นามสกุล]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="59e4b29a-0a45-43c9-bf97-c4f54945db2c" x="263" y="0" width="156" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="AngsanaUPC" size="16"/>
+				</textElement>
+				<text><![CDATA[เลขที่บัญชี]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="82eaacb9-9822-4fe8-a984-f3406cdba321" x="419" y="0" width="136" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="AngsanaUPC" size="16"/>
+				</textElement>
+				<text><![CDATA[จำนวนเงิน]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement uuid="927c1758-f856-45a4-a7d4-6783d701812b" x="263" y="0" width="156" height="20"/>
+				<textElement>
+					<font fontName="AngsanaUPC" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{BIZZACCOUNT_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eb6ceb0e-340a-4baa-bfa5-1e2c7d41449a" x="419" y="0" width="136" height="20"/>
+				<textElement>
+					<font fontName="AngsanaUPC" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DIV_AMT}+$F{AVG_AMT}-$F{PAY_AMT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="39b1f930-60da-4845-93b0-27a9dc36bce3" x="0" y="0" width="263" height="20"/>
+				<textElement>
+					<font fontName="AngsanaUPC" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRENAME_DESC}+$F{MEMB_NAME}+"  "+$F{MEMB_SURNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

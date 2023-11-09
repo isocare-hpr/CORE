@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ir_yr_receipt_main" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9a8371b0-5cbd-4b39-b067-c2d640d665fd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="370"/>
+	<parameter name="as_coopid" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_year" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_smembtype" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="as_emembtype" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\GCOOP_ALL\\CORE\\GCOOP\\iReport\\Reports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.div_year, a.member_no,b.membtype_code ,to_char( rank() over (order by a.member_no)) as rank
+from yrdivmaster a
+left join mbmembmaster b on a.member_no = b.member_no
+where a.coop_id =$P{as_coopid}
+and a.div_year = to_number($P{as_year})
+and b.membtype_code between $P{as_smembtype} and $P{as_emembtype}
+and a.member_no in (
+select
+a.member_no
+from yrslippayout a
+left join yrslippayoutdet b on a.payoutslip_no = b.payoutslip_no
+left join yrdivmethpay d on  a.payoutslip_no = d.ref_slipno and b.methpaytype_code = d.methpaytype_code and  a.div_year = d.div_year
+where d.methpaytype_code <> 'LON'
+and d.paytype_code = 'VAL'
+and a.div_year = to_number( $P{as_year})
+)
+
+
+order by a.member_no]]>
+	</queryString>
+	<field name="DIV_YEAR" class="java.lang.String"/>
+	<field name="MEMBER_NO" class="java.lang.String"/>
+	<field name="MEMBTYPE_CODE" class="java.lang.String"/>
+	<field name="RANK" class="java.lang.String"/>
+	<group name="group_memberno">
+		<groupExpression><![CDATA[$F{MEMBER_NO}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="842" splitType="Stretch">
+			<line>
+				<reportElement uuid="6a0b8e25-5443-44d5-9036-239772f557be" x="25" y="414" width="550" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<subreport>
+				<reportElement uuid="a404ce0c-dc3b-40cc-a34a-ea0d6a2c0ed4" x="0" y="0" width="595" height="410"/>
+				<subreportParameter name="as_divyear">
+					<subreportParameterExpression><![CDATA[$F{DIV_YEAR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="as_memberno">
+					<subreportParameterExpression><![CDATA[$F{MEMBER_NO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="as_rank">
+					<subreportParameterExpression><![CDATA[$F{RANK}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="as_show">
+					<subreportParameterExpression><![CDATA["1"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ir_yr_receipt_detail.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="f314a2d1-969b-4891-aaab-6d02cb0eb435" x="0" y="419" width="595" height="410"/>
+				<subreportParameter name="as_divyear">
+					<subreportParameterExpression><![CDATA[$F{DIV_YEAR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="as_memberno">
+					<subreportParameterExpression><![CDATA[$F{MEMBER_NO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="as_rank">
+					<subreportParameterExpression><![CDATA[$F{RANK}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="as_show">
+					<subreportParameterExpression><![CDATA["2"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ir_yr_receipt_detail.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

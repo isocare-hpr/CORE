@@ -1,0 +1,5 @@
+Save Format v3.0(19990112)
+appname "Default";
+applib "cmd.pbl";
+LibList "as_seminar.pbl;calculate_depreciationnew.pbl;cm_constant_config.pbl;cmcomddw.pbl;cmd_buyreq.pbl;cmd_catalog.pbl;cmd_item_cr.pbl;cmd_local.pbl;customer.pbl;dlg_search.pbl;impdataproduct.pbl;impproduct.pbl;incoming_balance.pbl;jernerral.pbl;pointofsale.pbl;pointofsale_disoffnew.pbl;pointofsale_move.pbl;pointofsale_repair.pbl;pointofsalercv.pbl;productdetai.pbl;cmd_ucfsuppliesgroup.pbl;cmd_ucfinvtlitemcode.pbl;cmd_ucfinvtadjtype.pbl;cmd_ucftakereasoncode.pbl;cmd_ucfdurtgrpcode.pbl;cmd_ucfdurtrcvtype.pbl;cmd_ucfdeptcode.pbl;cmd_ucfcutreasoncode.pbl;cmd_ucfunitcode.pbl;cmd_ptinvtmast.pbl;cmd_ptdurtmaster.pbl;cmd_ptinvtslipin.pbl;cmd_outproducts.pbl;cmd_ptinvtslipout.pbl;cmd_ptinvtslipadj.pbl;cmd_ptdurtslipin.pbl;cmd_ptdurtslipout.pbl;cmd_ucfbranchcode.pbl;cmd_durtcaldevalue.pbl;cmd_reqchgprodholder.pbl;cmd_invtcaldevalue.pbl;cmd_requisition_durt.pbl;cmd_dlgsearchdurt.pbl;cmd_ucfdurtgrpsubcode.pbl;cmd_ptinvtslipcancle.pbl";
+type "DataWindow Designer";

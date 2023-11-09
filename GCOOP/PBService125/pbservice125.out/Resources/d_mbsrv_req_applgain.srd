@@ -1,0 +1,52 @@
+$PBExportHeader$d_mbsrv_req_applgain.srd
+release 12.5;
+datawindow(units=1 color=1073741824 processing=0 print.canusedefaultprinter=yes print.margin.left=24 print.margin.right=24 print.margin.top=24 print.margin.bottom=24 )
+header(height=76 )
+detail(height=30 )
+summary(height=0 )
+footer(height=0 )
+table(column=(name=coop_id dbname="MBREQAPPLGAIN.COOP_ID" type=char(6) key=yes update=yes updatewhereclause=yes )
+column=(name=member_no dbname="MBREQAPPLGAIN.MEMBER_NO" type=char(8) update=yes updatewhereclause=yes )
+column=(name=seq_no dbname="MBREQAPPLGAIN.SEQ_NO" type=decimal(0) key=yes update=yes updatewhereclause=yes )
+column=(name=gain_name dbname="MBREQAPPLGAIN.GAIN_NAME" type=char(60) update=yes updatewhereclause=yes )
+column=(name=gain_surname dbname="MBREQAPPLGAIN.GAIN_SURNAME" type=char(60) update=yes updatewhereclause=yes )
+column=(name=gain_addr dbname="MBREQAPPLGAIN.GAIN_ADDR" type=char(200) update=yes updatewhereclause=yes )
+column=(name=gain_relation dbname="MBREQAPPLGAIN.GAIN_RELATION" type=char(30) update=yes updatewhereclause=yes )
+column=(name=remark dbname="MBREQAPPLGAIN.REMARK" type=char(500) update=yes updatewhereclause=yes )
+column=(name=write_date dbname="MBREQAPPLGAIN.WRITE_DATE" type=datetime update=yes updatewhereclause=yes )
+column=(name=write_at dbname="MBREQAPPLGAIN.WRITE_AT" type=char(60) update=yes updatewhereclause=yes )
+column=(name=age dbname="MBREQAPPLGAIN.AGE" type=char(15) update=yes updatewhereclause=yes )
+column=(name=appl_docno dbname="MBREQAPPLGAIN.APPL_DOCNO" type=char(10) key=yes update=yes updatewhereclause=yes )
+retrieve="  SELECT ~"MBREQAPPLGAIN~".~"COOP_ID~",   
+         ~"MBREQAPPLGAIN~".~"MEMBER_NO~",   
+         ~"MBREQAPPLGAIN~".~"SEQ_NO~",   
+         ~"MBREQAPPLGAIN~".~"GAIN_NAME~",   
+         ~"MBREQAPPLGAIN~".~"GAIN_SURNAME~",   
+         ~"MBREQAPPLGAIN~".~"GAIN_ADDR~",   
+         ~"MBREQAPPLGAIN~".~"GAIN_RELATION~",   
+         ~"MBREQAPPLGAIN~".~"REMARK~",   
+         ~"MBREQAPPLGAIN~".~"WRITE_DATE~",   
+         ~"MBREQAPPLGAIN~".~"WRITE_AT~",   
+         ~"MBREQAPPLGAIN~".~"AGE~",   
+         ~"MBREQAPPLGAIN~".~"APPL_DOCNO~"  
+    FROM ~"MBREQAPPLGAIN~"  
+   WHERE ( ~"MBREQAPPLGAIN~".~"COOP_ID~" = :as_coopid ) AND  
+         ( ~"MBREQAPPLGAIN~".~"APPL_DOCNO~" = :as_docno )    
+" update="MBREQAPPLGAIN" updatewhere=0 updatekeyinplace=yes arguments=(("as_coopid",string), ("as_docno",string))
+)
+text(name=t_5 band=header x="11" y="12" height="16" width="141" alignment="0" border="0" text="ข้อมูลผู้รับผลประโยชน์" font.face="Tahoma" font.height="-10" font.weight="700" font.underline="1" background.color="16777215" background.mode="2" )
+button(name=b_add band=header x="164" y="11" height="21" width="37" action="0" color="0" vtextalign="0" htextalign="0" text="เพิ่ม" font.face="Tahoma" font.height="-10" background.color="12632256" background.mode="2" )
+rectangle(name=r_1 band=header x="779" y="40" height="21" width="30" pen.color="16777215" pen.style="0" pen.width="1" brush.color="16777215" brush.hatch="6" background.color="16777215" background.mode="2" )
+text(name=t_2 band=header x="630" y="40" height="21" width="162" alignment="2" border="2" color="0" text="หมายเหตุ" font.face="Tahoma" font.height="-10" font.charset="222" font.family="0" background.color="33548243" background.mode="2" )
+text(name=t_1 band=header x="556" y="40" height="21" width="71" alignment="2" border="2" color="0" text="ความสัมพันธ์" font.face="Tahoma" font.height="-10" font.charset="222" font.family="0" background.color="33548243" background.mode="2" )
+text(name=t_7 band=header x="350" y="40" height="21" width="203" alignment="2" border="2" color="0" text="ที่อยู่ผู้รับโอน" font.face="Tahoma" font.height="-10" font.charset="222" font.family="0" background.color="33548243" background.mode="2" )
+text(name=t_4 band=header x="232" y="40" height="21" width="115" alignment="2" border="2" color="0" text="นามสกุล" font.face="Tahoma" font.height="-10" font.charset="222" font.family="0" background.color="33548243" background.mode="2" )
+text(name=t_6 band=header x="111" y="40" height="21" width="118" alignment="2" border="2" color="0" text="ชื่อ" font.face="Tahoma" font.height="-10" font.charset="222" font.family="0" background.color="33548243" background.mode="2" )
+text(name=t_26 band=header x="9" y="40" height="21" width="30" alignment="2" border="2" color="0" text="ลำดับ" font.face="Tahoma" font.height="-10" font.charset="222" font.family="0" background.color="33548243" background.mode="2" )
+column(name=seq_no band=detail x="9" y="3" height="21" width="30" id=3 border="2" alignment="0" format="[general]" protect="0~t1" tabsequence=130 font.face="Tahoma" font.height="-10" background.color="1073741824" background.mode="2" edit.autoselect=no edit.focusrectangle=no )
+button(name=b_del band=detail x="797" y="3" height="21" width="37" action="0" color="0" vtextalign="0" htextalign="0" text="ลบ" font.face="Tahoma" font.height="-10" background.color="12632256" background.mode="2" )
+column(name=remark band=detail x="630" y="3" height="21" width="162" id=8 border="2" alignment="0" format="[general]" tabsequence=50 font.face="Tahoma" font.height="-10" background.color="1073741824" background.mode="2" edit.autoselect=no edit.focusrectangle=no )
+column(name=gain_addr band=detail x="350" y="3" height="21" width="203" id=6 border="2" alignment="0" format="[general]" tabsequence=30 font.face="Tahoma" font.height="-10" background.color="1073741824" background.mode="2" edit.autoselect=no edit.focusrectangle=no )
+column(name=gain_surname band=detail x="232" y="3" height="21" width="115" id=5 border="2" alignment="0" format="[general]" tabsequence=20 font.face="Tahoma" font.height="-10" background.color="1073741824" background.mode="2" edit.autoselect=no edit.focusrectangle=no )
+column(name=gain_name band=detail x="111" y="3" height="21" width="118" id=4 border="2" alignment="0" format="[general]" tabsequence=10 font.face="Tahoma" font.height="-10" background.color="1073741824" background.mode="2" edit.autoselect=no edit.focusrectangle=no )
+column(name=gain_relation band=detail x="556" y="3" height="21" width="71" id=7 border="2" alignment="0" format="[general]" tabsequence=40 font.face="Tahoma" font.height="-10" background.color="1073741824" background.mode="2" dddw.name=dddw__mb_gain_concern_detail dddw.displaycolumn=gain_concern dddw.datacolumn=concern_code dddw.percentwidth=0 )
